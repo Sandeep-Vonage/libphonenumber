@@ -22,8 +22,6 @@
 #include <vector>
 
 #include "phonenumbers/base/basictypes.h"
-#include "absl/strings/string_view.h"
-#include "absl/strings/str_cat.h"
 
 namespace i18n {
 namespace phonenumbers {
@@ -48,8 +46,12 @@ size_t FindNth(const string& s, char c, int n);
 
 // Splits a string using a character delimiter. Appends the components to the
 // provided vector. Note that empty tokens are ignored.
-void SplitStringUsing(const string& s, char delimiter,
+void SplitStringUsing(const string& s, const string& delimiter,
                       vector<string>* result);
+
+// Replaces any occurrence of the character 'remove' (or the characters
+// in 'remove') with the character 'replacewith'.
+void StripString(string* s, const char* remove, char replacewith);
 
 // Returns true if 'in' starts with 'prefix' and writes 'in' minus 'prefix' into
 // 'out'.
@@ -75,9 +77,9 @@ void strrmm(string* s, const string& chars);
 int GlobalReplaceSubstring(const string& substring, const string& replacement,
                            string* s);
 
-// An abstract to absl::AlphaNum type; AlphaNum has more accomidating
-// constructors for more types.
-class StringHolder: public absl::AlphaNum {
+// Holds a reference to a std::string or C string. It can also be constructed
+// from an integer which is converted to a string.
+class StringHolder {
  public:
   // Don't make the constructors explicit to make the StrCat usage convenient.
   StringHolder(const string& s);  // NOLINT(runtime/explicit)
@@ -85,17 +87,23 @@ class StringHolder: public absl::AlphaNum {
   StringHolder(uint64_t n);         // NOLINT(runtime/explicit)
   ~StringHolder();
 
-  const absl::string_view GetString() const {
-    return Piece();
+  const string* GetString() const {
+    return string_;
   }
 
   const char* GetCString() const {
-    return data();
+    return cstring_;
   }
 
   size_t Length() const {
-    return size();
+    return len_;
   }
+
+ private:
+  const string converted_string_;  // Stores the string converted from integer.
+  const string* const string_;
+  const char* const cstring_;
+  const size_t len_;
 };
 
 string& operator+=(string& lhs, const StringHolder& rhs);
