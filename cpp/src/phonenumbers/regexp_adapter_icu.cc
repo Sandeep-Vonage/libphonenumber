@@ -46,7 +46,8 @@ namespace {
 // Converts UnicodeString 'source' to a UTF8-formatted std::string.
 string UnicodeStringToUtf8String(const UnicodeString& source) {
   string data;
-  source.toUTF8String(data);
+  StringByteSink sink(&data);
+  source.toUTF8(sink);
   return data;
 }
 
