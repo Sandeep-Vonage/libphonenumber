@@ -479,7 +479,8 @@ endif ()
 # Safeguarding against any potential link errors as mentioned in
 # https://github.com/abseil/abseil-cpp/issues/225
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
-list (APPEND LIBRARY_DEPS absl::node_hash_set absl::strings absl::synchronization)
+list (APPEND LIBRARY_DEPS absl::node_hash_set absl::strings)
+list (APPEND COMMON_DEPS absl::synchronization)
 
 if (APPLE)
   list (APPEND COMMON_DEPS ${COREFOUNDATION_LIB} ${FOUNDATION_LIB})
@@ -571,7 +572,7 @@ if (NOT WIN32)
   list (APPEND TEST_LIBS pthread)
 endif ()
 
-target_link_libraries (libphonenumber_test ${TEST_LIBS})
+target_link_libraries (libphonenumber_test ${TEST_LIBS} absl::node_hash_set)
 
 # Unfortunately add_custom_target() can't accept a single command provided as a
 # list of commands.
@@ -678,7 +679,7 @@ if (${BUILD_GEOCODER} STREQUAL "ON")
     geocoding_test_program
     "test/phonenumbers/geocoding/geocoding_test_program.cc"
   )
-  target_link_libraries (geocoding_test_program geocoding phonenumber)
+  target_link_libraries (geocoding_test_program geocoding phonenumber absl::node_hash_set)
 endif ()
 
 # Build an RPM
