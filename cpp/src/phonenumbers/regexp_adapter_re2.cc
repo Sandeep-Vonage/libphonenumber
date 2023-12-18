@@ -25,6 +25,7 @@
 
 #include "phonenumbers/base/basictypes.h"
 #include "phonenumbers/base/logging.h"
+using namespace re2;
 #include "phonenumbers/stringutil.h"
 
 namespace i18n {

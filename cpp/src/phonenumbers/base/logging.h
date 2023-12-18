@@ -26,7 +26,14 @@
 #endif
 
 #if !defined(DCHECK)
-#define DCHECK(X) assert(X)
+
+#ifdef DEBUG
+    #define DCHECK(X) assert(X)
+#else
+    #define DCHECK(X)
+#endif
+
+
 #define DCHECK_EQ(X, Y) CHECK_EQ((X), (Y))
 #define DCHECK_GE(X, Y) assert((X) >= (Y))
 #define DCHECK_GT(X, Y) assert((X) > (Y))

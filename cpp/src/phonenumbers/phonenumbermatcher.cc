@@ -20,6 +20,7 @@
 
 #include "phonenumbers/phonenumbermatcher.h"
 
+#define I18N_PHONENUMBERS_USE_ICU_REGEXP 1
 #ifndef I18N_PHONENUMBERS_USE_ICU_REGEXP
 #error phonenumbermatcher depends on ICU \
     (i.e. I18N_PHONENUMBERS_USE_ICU_REGEXP must be set)
