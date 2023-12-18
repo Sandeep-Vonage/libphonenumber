@@ -24,12 +24,11 @@ include (gtest.cmake)
 include (FetchContent)
 
 if(NOT absl_FOUND)
-  # Downloading the abseil sources at particular version to not catch up
-  # with its new build requirements like min C++14 is mandated in that lib.
+  # Downloading the abseil sources.
   FetchContent_Declare(
       abseil-cpp
       GIT_REPOSITORY  https://github.com/abseil/abseil-cpp.git
-      GIT_TAG         273292d
+      GIT_TAG         origin/master
   )
 
   # Building the abseil binaries
