@@ -47,8 +47,6 @@
 #include "phonenumbers/utf/unicodetext.h"
 #include "phonenumbers/utf/utf.h"
 
-#include "absl/strings/str_replace.h"
-
 namespace i18n {
 namespace phonenumbers {
 
@@ -1200,9 +1198,10 @@ void PhoneNumberUtil::FormatByPattern(
       const string& national_prefix = metadata->national_prefix();
       if (!national_prefix.empty()) {
         // Replace $NP with national prefix and $FG with the first group ($1).
-        absl::StrReplaceAll({{"$NP", national_prefix}},
-                            &national_prefix_formatting_rule);
-        absl::StrReplaceAll({{"$FG", "$1"}}, &national_prefix_formatting_rule);
+        GlobalReplaceSubstring("$NP", national_prefix,
+                               &national_prefix_formatting_rule);
+        GlobalReplaceSubstring("$FG", "$1",
+                               &national_prefix_formatting_rule);
         num_format_copy.set_national_prefix_formatting_rule(
             national_prefix_formatting_rule);
       } else {
